@@ -588,7 +588,7 @@
                     </div>
 
                     <!-- NVRAM Volume Memory Toggle -->
-                    <div class="control-group" style="margin-bottom: 0;">
+                    <div class="control-group">
                         <div class="toggle-row">
                             <div>
                                 <div style="font-weight: 500; font-size: 0.9rem;">Запоминать последнюю громкость перед выключением</div>
@@ -596,6 +596,48 @@
                             </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="volMemoryToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Logarithmic Volume Curve Toggle -->
+                    <div class="control-group">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Логарифмическая плавная шкала громкости</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Исключает резкие скачки громкости на шагах 1–5 в ночном режиме</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="logVolToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Smart CEC Power Sync Toggle -->
+                    <div class="control-group">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Умная синхронизация питания HDMI CEC</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Выключает саундбар с ТВ только на HDMI ARC, не мешая Bluetooth/AUX</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="smartCecToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Input Source Memory Toggle -->
+                    <div class="control-group" style="margin-bottom: 0;">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Запоминать активный источник входа при включении</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Восстанавливает точный источник (ARC / Opt / BT / AUX) из NVRAM</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="inputMemoryToggle" checked>
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
