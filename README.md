@@ -3,8 +3,10 @@
 [![SoC](https://img.shields.io/badge/SoC-Actions%20ATS2853-blue.svg)](https://www.actionstech.com/)
 [![OS](https://img.shields.io/badge/RTOS-Zephyr-green.svg)](https://www.zephyrproject.org/)
 [![Container](https://img.shields.io/badge/Format-Actions%20AOTA-orange.svg)]()
+[![GitHub Pages](https://img.shields.io/badge/Live%20Studio-GitHub%20Pages-cyan.svg)](https://sin7009.github.io/Tuvio-Soundbar-TSBM04B-reverse-engineering/)
 [![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 
+🌐 **Live Configurator Studio:** [https://sin7009.github.io/Tuvio-Soundbar-TSBM04B-reverse-engineering/](https://sin7009.github.io/Tuvio-Soundbar-TSBM04B-reverse-engineering/)  
 Источник прошивки: `TSBM04B-firmware.zip` (860 672 байта).
 
 Репозиторий посвящён исследованию, разбору и модификации OTA-прошивки саундбара **Tuvio TSBM04B** (5.1.2 Dolby Atmos).
