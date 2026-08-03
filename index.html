@@ -612,6 +612,81 @@
                     </div>
                 </div>
 
+                <!-- DSP & Audio Advanced Tuning Card -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <span class="card-icon">🎛️</span> Тонкая настройка DSP и Bluetooth
+                        </span>
+                    </div>
+
+                    <!-- Subwoofer Crossover Frequency -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Частота среза кроссовера Сабвуфера (Subwoofer Crossover)</span>
+                            <span id="subCutoffVal" class="control-value">90 Гц (Плотный бас)</span>
+                        </div>
+                        <input type="range" id="subCutoffSlider" class="range-slider" min="60" max="180" step="10" value="90">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
+                            <span>60 Гц (Глубокий)</span>
+                            <span>90 Гц (Рекомендуется)</span>
+                            <span>160 Гц (Заводское гудение)</span>
+                        </div>
+                    </div>
+
+                    <!-- Atmos Height Channels Gain -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Усиление каналов высоты Dolby Atmos (Height Channels Gain)</span>
+                            <span id="atmosGainVal" class="control-value">+4.0 дБ (Объём)</span>
+                        </div>
+                        <input type="range" id="atmosGainSlider" class="range-slider" min="-6" max="6" step="1" value="4">
+                    </div>
+
+                    <!-- Voice Clarity Enhancer -->
+                    <div class="control-group">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Улучшение разборчивости речи и вокала</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Динамическая компрессия диапазонов 1–3 кГц для выделения диалогов</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="voiceClarToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Bluetooth Bitrate Selection -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Битрейт и качество Bluetooth (SBC / AAC Bitrate Cap)</span>
+                        </div>
+                        <select id="btBitrateSelect" style="width: 100%; padding: 0.7rem 1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: var(--font-main); font-size: 0.9rem; outline: none;">
+                            <option value="256">Стандартное (256 kbps — Заводское)</option>
+                            <option value="328" selected>Высокое (328 kbps — High Quality)</option>
+                            <option value="450">Экстремальное (450 kbps — SBC Dual Channel Pro)</option>
+                        </select>
+                    </div>
+
+                    <!-- Custom Bluetooth Broadcast Name -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Отображаемое имя Bluetooth (BT Device Name)</span>
+                        </div>
+                        <input type="text" id="btNameInput" value="Tuvio Studio 5.1.2 Pro" style="width: 100%; padding: 0.7rem 1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 10px; color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.9rem; outline: none;">
+                    </div>
+
+                    <!-- Lip-Sync Delay Offset -->
+                    <div class="control-group" style="margin-bottom: 0;">
+                        <div class="control-label">
+                            <span>Смещение задержки звука / Липсинк (Lip-Sync Delay Offset)</span>
+                            <span id="lipSyncVal" class="control-value">0 мс (Точно)</span>
+                        </div>
+                        <input type="range" id="lipSyncSlider" class="range-slider" min="-100" max="100" step="5" value="0">
+                    </div>
+                </div>
+
             </div>
 
             <!-- Right Column: Console & Flashing Guide -->
@@ -695,6 +770,27 @@
         const volSlider = document.getElementById('volSlider');
         const volVal = document.getElementById('volVal');
         const consoleLog = document.getElementById('consoleLog');
+
+        const subCutoffSlider = document.getElementById('subCutoffSlider');
+        const subCutoffVal = document.getElementById('subCutoffVal');
+        const atmosGainSlider = document.getElementById('atmosGainSlider');
+        const atmosGainVal = document.getElementById('atmosGainVal');
+        const lipSyncSlider = document.getElementById('lipSyncSlider');
+        const lipSyncVal = document.getElementById('lipSyncVal');
+
+        subCutoffSlider.addEventListener('input', (e) => {
+            subCutoffVal.textContent = `${e.target.value} Гц (${e.target.value <= 100 ? 'Плотный бас' : 'Заводской'})`;
+        });
+
+        atmosGainSlider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            atmosGainVal.textContent = `${val >= 0 ? '+' : ''}${val}.0 дБ (${val > 0 ? 'Объём' : 'Нейтрально'})`;
+        });
+
+        lipSyncSlider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            lipSyncVal.textContent = `${val >= 0 ? '+' : ''}${val} мс (${val === 0 ? 'Точно' : 'Сдвиг'})`;
+        });
 
         volSlider.addEventListener('input', (e) => {
             volVal.textContent = `Уровень ${e.target.value}`;
