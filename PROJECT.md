@@ -13,24 +13,26 @@ Reverse engineer, unpack, patch, and repack the Tuvio TSBM04B soundbar OTA firmw
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| 1 | Firmware Decryption & Unpacking Tooling | Analyze `mbrec.bin` & `zephyr.bin` vendor `ACTH` header/payload, develop Python unpacker (`unpack_zephyr.py`) producing valid Thumb-2 code | None | IN_PROGRESS |
-| 2 | Reverse Engineering & Binary Patching | Analyze ARM Thumb-2 binary & `sdfs.bin` tables, locate auto-standby audio energy threshold and rear speaker keep-alive logic, develop `patch_firmware.py` | M1 | PLANNED |
-| 3 | OTA Repacking & Verification | Repack modified partitions into `ota.bin` via `aota_tool.py`, recalculate all CRC32 checksums, verify bit-exact structure | M2 | PLANNED |
+| 1 | Firmware Decryption & Unpacking Tooling | Analyze `mbrec.bin` & `zephyr.bin` vendor `ACTH` header/payload, develop Python unpacker (`unpack_zephyr.py`) producing valid Thumb-2 code | None | DONE |
+| 2 | Reverse Engineering & Binary Patching | Analyze ARM Thumb-2 binary & `sdfs.bin` tables, locate auto-standby audio energy threshold and rear speaker keep-alive logic, develop `patch_firmware.py` | M1 | DONE |
+| 3 | OTA Repacking & Verification | Repack modified partitions into `patched_ota.bin` via `aota_tool.py`, recalculate all CRC32 checksums, verify bit-exact structure | M2 | DONE |
 
 ## Interface Contracts
 - **`unpack_zephyr.py`**:
   Input: `dec/zephyr.bin` (or `raw/zephyr.bin`) & `dec/mbrec.bin`
   Output: `unpacked/zephyr_code.bin` / `unpacked/zephyr.elf` (valid Thumb-2 instructions)
 - **`patch_firmware.py`**:
-  Input: Unpacked firmware and/or `dec/sdfs.bin`
-  Output: Patched binary and repacked `dec/zephyr.bin`
+  Input: Unpacked firmware (`unpacked/zephyr_code.bin`) and `dec/sdfs.bin`
+  Output: Patched binaries in `patched/` (`patched/dec_sdfs.bin`, `patched/dec_zephyr.bin`, `patched/raw_sdfs.bin`, `patched/raw_zephyr.bin`, `patched/patched_zephyr_code.bin`)
 - **`aota_tool.py`**:
-  Input: `dec/` directory
-  Output: `new_ota.bin` (valid Actions OTA image passing all CRC32 checks)
+  Input: `patched/` directory (or decrypted partition directory)
+  Output: `patched_ota.bin` (valid Actions OTA image passing all 7 CRC32 checks)
 
 ## Code Layout
 - `raw/`: Raw extracted OTA partitions
 - `dec/`: XOR-decrypted OTA partitions
-- `unpack_zephyr.py`: Python script for `ACTH` / Actions ATS2853 payload extraction
-- `patch_firmware.py`: Patching script for auto-standby threshold and rear satellite keep-alive
-- `aota_tool.py`: OTA container unpack/repack utility
+- `patched/`: Patched decrypted/raw partition binaries
+- `unpack_zephyr.py`: Python script for `ACTH` / Actions ATS2853 continuous keystream payload extraction
+- `patch_firmware.py`: Patching script for auto-standby threshold, sleep timer NOP, and rear satellite keep-alive
+- `aota_tool.py`: Actions OTA container pack/unpack/repack utility
+- `patched_ota.bin`: Final repacked OTA firmware container (860,672 bytes)
