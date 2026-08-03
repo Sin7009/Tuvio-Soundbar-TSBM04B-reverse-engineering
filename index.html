@@ -560,7 +560,7 @@
                     </div>
 
                     <!-- Audio Energy Threshold -->
-                    <div class="control-group" style="margin-bottom: 0;">
+                    <div class="control-group">
                         <div class="toggle-row">
                             <div>
                                 <div style="font-weight: 500; font-size: 0.9rem;">Повышенная чувствительность к тихому звуку</div>
@@ -568,6 +568,34 @@
                             </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="audioSenseToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Power-On Default Volume Slider -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Громкость по умолчанию при включении (Default Power-On Volume)</span>
+                            <span id="volVal" class="control-value">Уровень 6 (Комфортный)</span>
+                        </div>
+                        <input type="range" id="volSlider" class="range-slider" min="1" max="15" step="1" value="6">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
+                            <span>1 (Очень тихо)</span>
+                            <span>6 (Рекомендуется)</span>
+                            <span>15 (Заводской ор: 15)</span>
+                        </div>
+                    </div>
+
+                    <!-- NVRAM Volume Memory Toggle -->
+                    <div class="control-group" style="margin-bottom: 0;">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Запоминать последнюю громкость перед выключением</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Восстанавливает сохранённый уровень из NVRAM при каждом включении</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="volMemoryToggle" checked>
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -664,7 +692,13 @@
         const ledDisplay = document.getElementById('ledDisplay');
         const rfSlider = document.getElementById('rfSlider');
         const rfTimeoutVal = document.getElementById('rfTimeoutVal');
+        const volSlider = document.getElementById('volSlider');
+        const volVal = document.getElementById('volVal');
         const consoleLog = document.getElementById('consoleLog');
+
+        volSlider.addEventListener('input', (e) => {
+            volVal.textContent = `Уровень ${e.target.value}`;
+        });
 
         standbySlider.addEventListener('input', (e) => {
             const mins = parseInt(e.target.value);
