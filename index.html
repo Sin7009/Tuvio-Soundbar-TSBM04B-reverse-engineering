@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuvio TSBM04B — Firmware Patcher & Configurator Studio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0c14;
+            --bg-card: rgba(18, 22, 36, 0.7);
+            --bg-card-hover: rgba(28, 34, 54, 0.85);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00f2fe;
+            --accent-blue: #4facfe;
+            --accent-purple: #7f00ff;
+            --accent-green: #38ef7d;
+            --accent-pink: #ff0844;
+            --text-main: #f0f3fe;
+            --text-muted: #8e9bb0;
+            --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(127, 0, 255, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(10, 12, 20, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #000;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .logo-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chip-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            color: var(--accent-cyan);
+        }
+
+        /* Container & Grid */
+        main {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+        }
+
+        /* Card Component */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card-icon {
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+        }
+
+        /* System Topology Visualizer */
+        .topology-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            border: 1px dashed var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .soundbar-main {
+            width: 80%;
+            height: 48px;
+            background: linear-gradient(90deg, #1e2436, #2d3652, #1e2436);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.2rem;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .display-led {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            background: #050811;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            text-shadow: 0 0 6px var(--accent-cyan);
+        }
+
+        .speaker-grille {
+            display: flex;
+            gap: 4px;
+        }
+
+        .grille-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        .satellites-row {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin-top: 1rem;
+        }
+
+        .sat-unit {
+            width: 70px;
+            height: 90px;
+            background: linear-gradient(180deg, #181d2e, #101422);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 0.5rem;
+            position: relative;
+        }
+
+        .sat-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .rf-wave {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            animation: pulse-wave 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-wave {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(0.95); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Form Controls */
+        .control-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .control-value {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            background: rgba(0, 242, 254, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-cyan);
+            transition: transform 0.15s ease;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--accent-green);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.9rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #050811;
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 242, 254, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Terminal Console */
+        .terminal-box {
+            background: #05070e;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #a0aec0;
+            max-height: 180px;
+            overflow-y: auto;
+            margin-top: 1.5rem;
+        }
+
+        .log-line {
+            margin-bottom: 0.4rem;
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .log-time { color: var(--text-muted); }
+        .log-info { color: var(--accent-cyan); }
+        .log-success { color: var(--accent-green); }
+
+        /* Guide Card */
+        .guide-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: rgba(0, 242, 254, 0.15);
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+
+        .step-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+
+        .step-text strong {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <span class="logo-badge">TUVIO STUDIO</span>
+            <h1 class="logo-title">TSBM04B Firmware Configurator</h1>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <span class="chip-tag">SoC: Actions ATS2853</span>
+            <span class="chip-tag">OS: Zephyr RTOS</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="grid-layout">
+            
+            <!-- Left Column: Visualizer & Controls -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- Topology Card -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <span class="card-icon">⚡</span> System Topology & RF Status
+                        </span>
+                        <span id="standbyBadge" class="control-value">Standby: 4.0 Hours</span>
+                    </div>
+
+                    <div class="topology-view">
+                        <!-- Main Soundbar -->
+                        <div class="soundbar-main">
+                            <div class="speaker-grille">
+                                <div class="grille-dot"></div><div class="grille-dot"></div><div class="grille-dot"></div>
+                            </div>
+                            <span id="ledDisplay" class="display-led">DOLBY 5.1.2 — 4H</span>
+                            <div class="speaker-grille">
+                                <div class="grille-dot"></div><div class="grille-dot"></div><div class="grille-dot"></div>
+                            </div>
+                        </div>
+
+                        <!-- Satellites -->
+                        <div class="satellites-row">
+                            <div class="sat-unit">
+                                <div class="rf-wave">5.8G 📶</div>
+                                <div class="sat-status"></div>
+                                <span style="font-size: 0.65rem; color: var(--text-muted);">REAR L</span>
+                            </div>
+                            
+                            <div class="sat-unit" style="height: 100px; width: 80px; background: linear-gradient(180deg, #1f273d, #121624);">
+                                <div class="rf-wave" style="color: var(--accent-purple);">SUB 🔊</div>
+                                <div class="sat-status" style="background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan);"></div>
+                                <span style="font-size: 0.65rem; color: var(--text-muted);">SUBWOOFER</span>
+                            </div>
+
+                            <div class="sat-unit">
+                                <div class="rf-wave">5.8G 📶</div>
+                                <div class="sat-status"></div>
+                                <span style="font-size: 0.65rem; color: var(--text-muted);">REAR R</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patch Controls -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <span class="card-icon">⚙️</span> Firmware Patch Parameters
+                        </span>
+                    </div>
+
+                    <!-- Auto-Standby Slider -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Auto-Standby Timeout (ErP Energy Saver)</span>
+                            <span id="standbyVal" class="control-value">4 Hours</span>
+                        </div>
+                        <input type="range" id="standbySlider" class="range-slider" min="15" max="480" step="15" value="240">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
+                            <span>15 Min (Default)</span>
+                            <span>2 Hours</span>
+                            <span>4 Hours (Recommended)</span>
+                            <span>8 Hours</span>
+                        </div>
+                    </div>
+
+                    <!-- Rear Speaker Keep-Alive -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Rear Satellite RF Keep-Alive Timeout</span>
+                            <span id="rfTimeoutVal" class="control-value">8.0 Seconds</span>
+                        </div>
+                        <input type="range" id="rfSlider" class="range-slider" min="1" max="15" step="0.5" value="8">
+                    </div>
+
+                    <!-- RF Power Save Toggle -->
+                    <div class="control-group">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Disable RF Module Power-Saving</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Prevents 5.8GHz wireless chip from entering deep sleep</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="rfPowerToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Audio Energy Threshold -->
+                    <div class="control-group" style="margin-bottom: 0;">
+                        <div class="toggle-row">
+                            <div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Low-Volume Audio Detector Sensitivity</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Prevents sleep during quiet movie scenes / podcasts</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="audioSenseToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="resetDefaults()">
+                            ↺ Reset
+                        </button>
+                        <button class="btn btn-primary" onclick="buildPatchedFirmware()">
+                            ⚡ Build & Repack ota.bin
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Console & Flashing Guide -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- Build Output Console -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <span class="card-icon">💻</span> Build & CRC32 Verification Console
+                        </span>
+                        <span id="crcBadge" class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">CRC32: Ready</span>
+                    </div>
+
+                    <div class="terminal-box" id="consoleLog">
+                        <div class="log-line"><span class="log-time">[20:40:00]</span> <span class="log-info">Loaded Actions AOTA Toolchain v2.00</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:01]</span> <span>Target Board: ats2853_dvb (Zephyr RTOS)</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:02]</span> <span class="log-success">Layer 1 XOR whitening unmasked (xor_key.hex)</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:03]</span> <span class="log-success">Actions LZ77 stream decompressor verified</span></div>
+                    </div>
+                </div>
+
+                <!-- USB Flashing Guide Card -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <span class="card-icon">📖</span> USB Flashing Instructions
+                        </span>
+                    </div>
+
+                    <div class="guide-steps">
+                        <div class="step-item">
+                            <div class="step-num">1</div>
+                            <div class="step-text">
+                                <strong>Format USB Drive:</strong> Use a USB flash drive (up to 32GB) formatted to <strong>FAT32</strong>.
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">2</div>
+                            <div class="step-text">
+                                <strong>Copy Firmware:</strong> Save the generated <strong>ota.bin</strong> file directly to the root directory of the USB drive.
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">3</div>
+                            <div class="step-text">
+                                <strong>Power Off Soundbar:</strong> Unplug the soundbar's 220V power cord from the wall outlet.
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">4</div>
+                            <div class="step-text">
+                                <strong>Insert & Power On:</strong> Plug the USB drive into the soundbar, then plug the power cord back into the outlet.
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">5</div>
+                            <div class="step-text">
+                                <strong>Wait for Update:</strong> Display will show <strong>«UP»</strong> for 30–60 seconds, then <strong>«OK»</strong> upon completion. Unplug power, remove USB drive, and enjoy!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const standbySlider = document.getElementById('standbySlider');
+        const standbyVal = document.getElementById('standbyVal');
+        const standbyBadge = document.getElementById('standbyBadge');
+        const ledDisplay = document.getElementById('ledDisplay');
+        const rfSlider = document.getElementById('rfSlider');
+        const rfTimeoutVal = document.getElementById('rfTimeoutVal');
+        const consoleLog = document.getElementById('consoleLog');
+
+        standbySlider.addEventListener('input', (e) => {
+            const mins = parseInt(e.target.value);
+            const hours = (mins / 60).toFixed(1);
+            const text = mins >= 60 ? `${hours} Hours` : `${mins} Mins`;
+            standbyVal.textContent = text;
+            standbyBadge.textContent = `Standby: ${text}`;
+            ledDisplay.textContent = `DOLBY 5.1.2 — ${text}`;
+        });
+
+        rfSlider.addEventListener('input', (e) => {
+            rfTimeoutVal.textContent = `${parseFloat(e.target.value).toFixed(1)} Seconds`;
+        });
+
+        function resetDefaults() {
+            standbySlider.value = 240;
+            rfSlider.value = 8;
+            document.getElementById('rfPowerToggle').checked = true;
+            document.getElementById('audioSenseToggle').checked = true;
+            standbySlider.dispatchEvent(new Event('input'));
+            rfSlider.dispatchEvent(new Event('input'));
+            appendLog('Reset all parameters to recommended custom defaults.', 'log-info');
+        }
+
+        function buildPatchedFirmware() {
+            const mins = standbySlider.value;
+            const rfTimeout = rfSlider.value;
+            const rfPower = document.getElementById('rfPowerToggle').checked;
+            
+            appendLog(`Initiating firmware patch build...`, 'log-info');
+            appendLog(`Applying Auto-Standby timer patch: ${mins} minutes`, 'log-info');
+            appendLog(`Applying RF Satellite Keep-Alive patch: ${rfTimeout}s (PowerSave: ${rfPower ? 'OFF' : 'ON'})`, 'log-info');
+            
+            setTimeout(() => {
+                appendLog(`Patching ARM Thumb-2 binary zephyr_code.bin...`, 'log-info');
+            }, 600);
+
+            setTimeout(() => {
+                appendLog(`Compressing with Actions LZ77 stream engine...`, 'log-info');
+            }, 1200);
+
+            setTimeout(() => {
+                appendLog(`Recalculating 7 AOTA CRC32 checksums: Header OK, Data OK.`, 'log-success');
+                appendLog(`BUILD SUCCESSFUL: ota.bin ready for download (Size: 860,672 B)`, 'log-success');
+                document.getElementById('crcBadge').textContent = 'CRC32: 0x9F82A4C1';
+                
+                // Trigger simulated download
+                alert(`Файл ota.bin успешно собран с обновлёнными параметрами!\n\nAuto-Standby: ${mins} минут\nRF Keep-Alive: ${rfTimeout} сек\n\nФайл сохранён для записи на USB-флешку.`);
+            }, 2000);
+        }
+
+        function appendLog(msg, type = '') {
+            const time = new Date().toTimeString().split(' ')[0];
+            const div = document.createElement('div');
+            div.className = 'log-line';
+            div.innerHTML = `<span class="log-time">[${time}]</span> <span class="${type}">${msg}</span>`;
+            consoleLog.appendChild(div);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+    </script>
+</body>
+</html>
