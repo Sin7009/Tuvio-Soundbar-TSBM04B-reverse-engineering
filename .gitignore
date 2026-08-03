@@ -1,0 +1,35 @@
+# macOS / System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# IDE / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Subagent / Agent internal logs and state
+.agents/
+
+# Binary firmware files and extracted payloads
+raw/
+dec/
+unpacked/
+*.bin
+*.elf
