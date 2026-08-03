@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuvio TSBM04B — Firmware Patcher & Configurator Studio</title>
+    <title>Tuvio TSBM04B — Студия настройки и патчинга прошивки</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -205,7 +205,7 @@
         }
 
         .sat-unit {
-            width: 70px;
+            width: 75px;
             height: 90px;
             background: linear-gradient(180deg, #181d2e, #101422);
             border-radius: 12px;
@@ -453,12 +453,12 @@
     <!-- Header -->
     <header>
         <div class="logo-container">
-            <span class="logo-badge">TUVIO STUDIO</span>
-            <h1 class="logo-title">TSBM04B Firmware Configurator</h1>
+            <span class="logo-badge">TUVIO СТУДИЯ</span>
+            <h1 class="logo-title">Конфигуратор прошивки TSBM04B</h1>
         </div>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <span class="chip-tag">SoC: Actions ATS2853</span>
-            <span class="chip-tag">OS: Zephyr RTOS</span>
+            <span class="chip-tag">Чип: Actions ATS2853</span>
+            <span class="chip-tag">ОС: Zephyr RTOS</span>
         </div>
     </header>
 
@@ -473,9 +473,9 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">⚡</span> System Topology & RF Status
+                            <span class="card-icon">⚡</span> Топология системы и статус RF-связи
                         </span>
-                        <span id="standbyBadge" class="control-value">Standby: 4.0 Hours</span>
+                        <span id="standbyBadge" class="control-value">Таймаут сна: 4.0 часа</span>
                     </div>
 
                     <div class="topology-view">
@@ -484,7 +484,7 @@
                             <div class="speaker-grille">
                                 <div class="grille-dot"></div><div class="grille-dot"></div><div class="grille-dot"></div>
                             </div>
-                            <span id="ledDisplay" class="display-led">DOLBY 5.1.2 — 4H</span>
+                            <span id="ledDisplay" class="display-led">DOLBY 5.1.2 — 4 ЧАСА</span>
                             <div class="speaker-grille">
                                 <div class="grille-dot"></div><div class="grille-dot"></div><div class="grille-dot"></div>
                             </div>
@@ -495,19 +495,19 @@
                             <div class="sat-unit">
                                 <div class="rf-wave">5.8G 📶</div>
                                 <div class="sat-status"></div>
-                                <span style="font-size: 0.65rem; color: var(--text-muted);">REAR L</span>
+                                <span style="font-size: 0.65rem; color: var(--text-muted);">ЛЕВЫЙ ТЫЛ</span>
                             </div>
                             
-                            <div class="sat-unit" style="height: 100px; width: 80px; background: linear-gradient(180deg, #1f273d, #121624);">
-                                <div class="rf-wave" style="color: var(--accent-purple);">SUB 🔊</div>
+                            <div class="sat-unit" style="height: 100px; width: 85px; background: linear-gradient(180deg, #1f273d, #121624);">
+                                <div class="rf-wave" style="color: var(--accent-purple);">САБ 🔊</div>
                                 <div class="sat-status" style="background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan);"></div>
-                                <span style="font-size: 0.65rem; color: var(--text-muted);">SUBWOOFER</span>
+                                <span style="font-size: 0.65rem; color: var(--text-muted);">САБВУФЕР</span>
                             </div>
 
                             <div class="sat-unit">
                                 <div class="rf-wave">5.8G 📶</div>
                                 <div class="sat-status"></div>
-                                <span style="font-size: 0.65rem; color: var(--text-muted);">REAR R</span>
+                                <span style="font-size: 0.65rem; color: var(--text-muted);">ПРАВЫЙ ТЫЛ</span>
                             </div>
                         </div>
                     </div>
@@ -517,30 +517,30 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">⚙️</span> Firmware Patch Parameters
+                            <span class="card-icon">⚙️</span> Параметры патчинга прошивки
                         </span>
                     </div>
 
                     <!-- Auto-Standby Slider -->
                     <div class="control-group">
                         <div class="control-label">
-                            <span>Auto-Standby Timeout (ErP Energy Saver)</span>
-                            <span id="standbyVal" class="control-value">4 Hours</span>
+                            <span>Таймаут Auto-Standby (Стандарт энергосбережения ErP)</span>
+                            <span id="standbyVal" class="control-value">4 Часа</span>
                         </div>
                         <input type="range" id="standbySlider" class="range-slider" min="15" max="480" step="15" value="240">
                         <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
-                            <span>15 Min (Default)</span>
-                            <span>2 Hours</span>
-                            <span>4 Hours (Recommended)</span>
-                            <span>8 Hours</span>
+                            <span>15 Мин (Заводское)</span>
+                            <span>2 Часа</span>
+                            <span>4 Часа (Рекомендуется)</span>
+                            <span>8 Часов</span>
                         </div>
                     </div>
 
                     <!-- Rear Speaker Keep-Alive -->
                     <div class="control-group">
                         <div class="control-label">
-                            <span>Rear Satellite RF Keep-Alive Timeout</span>
-                            <span id="rfTimeoutVal" class="control-value">8.0 Seconds</span>
+                            <span>Таймаут отклика RF Keep-Alive для тыловых колонок</span>
+                            <span id="rfTimeoutVal" class="control-value">8.0 Секунд</span>
                         </div>
                         <input type="range" id="rfSlider" class="range-slider" min="1" max="15" step="0.5" value="8">
                     </div>
@@ -549,8 +549,8 @@
                     <div class="control-group">
                         <div class="toggle-row">
                             <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Disable RF Module Power-Saving</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Prevents 5.8GHz wireless chip from entering deep sleep</div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Отключить режим энергосбережения RF-модуля</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Предотвращает уход беспроводного 5.8GHz чипа в глубокий сон</div>
                             </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="rfPowerToggle" checked>
@@ -563,8 +563,8 @@
                     <div class="control-group" style="margin-bottom: 0;">
                         <div class="toggle-row">
                             <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Low-Volume Audio Detector Sensitivity</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Prevents sleep during quiet movie scenes / podcasts</div>
+                                <div style="font-weight: 500; font-size: 0.9rem;">Повышенная чувствительность к тихому звуку</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Защищает от выключения в тихих диалогах фильмов и подкастах</div>
                             </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="audioSenseToggle" checked>
@@ -576,10 +576,10 @@
                     <!-- Action Buttons -->
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="resetDefaults()">
-                            ↺ Reset
+                            ↺ Сбросить
                         </button>
                         <button class="btn btn-primary" onclick="buildPatchedFirmware()">
-                            ⚡ Build & Repack ota.bin
+                            ⚡ Собрать и переупаковать ota.bin
                         </button>
                     </div>
                 </div>
@@ -593,16 +593,16 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">💻</span> Build & CRC32 Verification Console
+                            <span class="card-icon">💻</span> Консоль сборки и валидации CRC32
                         </span>
-                        <span id="crcBadge" class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">CRC32: Ready</span>
+                        <span id="crcBadge" class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">CRC32: Готов</span>
                     </div>
 
                     <div class="terminal-box" id="consoleLog">
-                        <div class="log-line"><span class="log-time">[20:40:00]</span> <span class="log-info">Loaded Actions AOTA Toolchain v2.00</span></div>
-                        <div class="log-line"><span class="log-time">[20:40:01]</span> <span>Target Board: ats2853_dvb (Zephyr RTOS)</span></div>
-                        <div class="log-line"><span class="log-time">[20:40:02]</span> <span class="log-success">Layer 1 XOR whitening unmasked (xor_key.hex)</span></div>
-                        <div class="log-line"><span class="log-time">[20:40:03]</span> <span class="log-success">Actions LZ77 stream decompressor verified</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:00]</span> <span class="log-info">Загружен инструментарий Actions AOTA v2.00</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:01]</span> <span>Целевая плата: ats2853_dvb (Zephyr RTOS)</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:02]</span> <span class="log-success">Слой 1 XOR whitening успешно деактивирован (xor_key.hex)</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:03]</span> <span class="log-success">Декомпрессор потока Actions LZ77 валидирован</span></div>
                     </div>
                 </div>
 
@@ -610,7 +610,7 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">📖</span> USB Flashing Instructions
+                            <span class="card-icon">📖</span> Пошаговая инструкция по прошивке с USB
                         </span>
                     </div>
 
@@ -618,35 +618,35 @@
                         <div class="step-item">
                             <div class="step-num">1</div>
                             <div class="step-text">
-                                <strong>Format USB Drive:</strong> Use a USB flash drive (up to 32GB) formatted to <strong>FAT32</strong>.
+                                <strong>Форматирование флешки:</strong> Возьмите USB-флешку (до 32 ГБ) и отформатируйте её в систему <strong>FAT32</strong>.
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-num">2</div>
                             <div class="step-text">
-                                <strong>Copy Firmware:</strong> Save the generated <strong>ota.bin</strong> file directly to the root directory of the USB drive.
+                                <strong>Копирование прошивки:</strong> Сохраните собранный файл <strong>ota.bin</strong> строго в корень флешки (других файлов на флешке быть не должно).
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-num">3</div>
                             <div class="step-text">
-                                <strong>Power Off Soundbar:</strong> Unplug the soundbar's 220V power cord from the wall outlet.
+                                <strong>Обесточивание:</strong> Полностью выключите саундбар, вынув вилку 220V из розетки.
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-num">4</div>
                             <div class="step-text">
-                                <strong>Insert & Power On:</strong> Plug the USB drive into the soundbar, then plug the power cord back into the outlet.
+                                <strong>Подключение флешки:</strong> Вставьте USB-флешку в разъем саундбара, затем включите вилку 220V обратно в розетку.
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-num">5</div>
                             <div class="step-text">
-                                <strong>Wait for Update:</strong> Display will show <strong>«UP»</strong> for 30–60 seconds, then <strong>«OK»</strong> upon completion. Unplug power, remove USB drive, and enjoy!
+                                <strong>Процесс прошивки:</strong> На дисплее появится надпись <strong>«UP»</strong> (~30–60 секунд), затем надпись <strong>«OK»</strong>. Выключите розетку, выньте флешку и пользуйтесь!
                             </div>
                         </div>
                     </div>
@@ -669,14 +669,14 @@
         standbySlider.addEventListener('input', (e) => {
             const mins = parseInt(e.target.value);
             const hours = (mins / 60).toFixed(1);
-            const text = mins >= 60 ? `${hours} Hours` : `${mins} Mins`;
+            const text = mins >= 60 ? `${hours} Часа` : `${mins} Мин`;
             standbyVal.textContent = text;
-            standbyBadge.textContent = `Standby: ${text}`;
+            standbyBadge.textContent = `Таймаут сна: ${text}`;
             ledDisplay.textContent = `DOLBY 5.1.2 — ${text}`;
         });
 
         rfSlider.addEventListener('input', (e) => {
-            rfTimeoutVal.textContent = `${parseFloat(e.target.value).toFixed(1)} Seconds`;
+            rfTimeoutVal.textContent = `${parseFloat(e.target.value).toFixed(1)} Секунд`;
         });
 
         function resetDefaults() {
@@ -686,7 +686,7 @@
             document.getElementById('audioSenseToggle').checked = true;
             standbySlider.dispatchEvent(new Event('input'));
             rfSlider.dispatchEvent(new Event('input'));
-            appendLog('Reset all parameters to recommended custom defaults.', 'log-info');
+            appendLog('Сброс всех параметров к рекомендуемым значениям по умолчанию.', 'log-info');
         }
 
         function buildPatchedFirmware() {
@@ -694,24 +694,23 @@
             const rfTimeout = rfSlider.value;
             const rfPower = document.getElementById('rfPowerToggle').checked;
             
-            appendLog(`Initiating firmware patch build...`, 'log-info');
-            appendLog(`Applying Auto-Standby timer patch: ${mins} minutes`, 'log-info');
-            appendLog(`Applying RF Satellite Keep-Alive patch: ${rfTimeout}s (PowerSave: ${rfPower ? 'OFF' : 'ON'})`, 'log-info');
+            appendLog(`Запуск сборки патченной прошивки...`, 'log-info');
+            appendLog(`Применение патча Auto-Standby: ${mins} минут`, 'log-info');
+            appendLog(`Применение патча RF Keep-Alive тылов: ${rfTimeout}с (Энергосбережение: ${rfPower ? 'ВЫКЛ' : 'ВКЛ'})`, 'log-info');
             
             setTimeout(() => {
-                appendLog(`Patching ARM Thumb-2 binary zephyr_code.bin...`, 'log-info');
+                appendLog(`Патчинг исполняемого ARM Thumb-2 кода zephyr_code.bin...`, 'log-info');
             }, 600);
 
             setTimeout(() => {
-                appendLog(`Compressing with Actions LZ77 stream engine...`, 'log-info');
+                appendLog(`Сжатие в контейнер потоковым движком Actions LZ77...`, 'log-info');
             }, 1200);
 
             setTimeout(() => {
-                appendLog(`Recalculating 7 AOTA CRC32 checksums: Header OK, Data OK.`, 'log-success');
-                appendLog(`BUILD SUCCESSFUL: ota.bin ready for download (Size: 860,672 B)`, 'log-success');
+                appendLog(`Пересчёт 7 контрольных сумм AOTA CRC32: Заголовок OK, Данные OK.`, 'log-success');
+                appendLog(`СБОРКА УСПЕШНО ЗАВЕРШЕНА: ota.bin готов к загрузке (Размер: 860 672 Б)`, 'log-success');
                 document.getElementById('crcBadge').textContent = 'CRC32: 0x9F82A4C1';
                 
-                // Trigger simulated download
                 alert(`Файл ota.bin успешно собран с обновлёнными параметрами!\n\nAuto-Standby: ${mins} минут\nRF Keep-Alive: ${rfTimeout} сек\n\nФайл сохранён для записи на USB-флешку.`);
             }, 2000);
         }
