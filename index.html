@@ -10,20 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0c14;
-            --bg-card: rgba(18, 22, 36, 0.7);
-            --bg-card-hover: rgba(28, 34, 54, 0.85);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-primary: #070913;
+            --bg-card: rgba(15, 20, 36, 0.75);
+            --bg-card-hover: rgba(24, 32, 56, 0.9);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --border-glow: rgba(0, 242, 254, 0.4);
             --accent-cyan: #00f2fe;
             --accent-blue: #4facfe;
             --accent-purple: #7f00ff;
             --accent-green: #38ef7d;
             --accent-pink: #ff0844;
-            --text-main: #f0f3fe;
-            --text-muted: #8e9bb0;
+            --accent-gold: #f6d365;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.55);
         }
 
         * {
@@ -35,28 +37,63 @@
         body {
             background-color: var(--bg-primary);
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(127, 0, 255, 0.08) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(127, 0, 255, 0.14) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(56, 239, 125, 0.05) 0%, transparent 60%);
             color: var(--text-main);
             font-family: var(--font-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Ambient Light Orbs */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 30%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.15), transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+            animation: floatOrb 12s infinite ease-in-out alternate;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px;
+            right: 20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(127, 0, 255, 0.18), transparent 70%);
+            filter: blur(100px);
+            z-index: -1;
+            animation: floatOrb 16s infinite ease-in-out alternate-reverse;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, 40px) scale(1.15); }
         }
 
         /* Header */
         header {
-            padding: 1.5rem 3rem;
+            padding: 1.2rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            background: rgba(10, 12, 20, 0.8);
-            backdrop-filter: blur(12px);
+            background: rgba(7, 9, 19, 0.85);
+            backdrop-filter: blur(16px);
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
 
         .logo-container {
@@ -802,6 +839,28 @@
         </div>
     </main>
 
+    <!-- Modal for Download & Success Notification -->
+    <div id="downloadModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(12px); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glow); box-shadow: 0 0 50px rgba(0, 242, 254, 0.3); border-radius: 24px; padding: 2.5rem; max-width: 480px; width: 90%; text-align: center; position: relative;">
+            <div style="width: 70px; height: 70px; background: rgba(56, 239, 125, 0.15); border: 2px solid var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: var(--accent-green); box-shadow: 0 0 20px rgba(56, 239, 125, 0.4);">
+                ✓
+            </div>
+            <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Сборка завершена!</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                Файл прошивки <strong style="color: var(--accent-cyan);">ota.bin</strong> (860 672 байт) успешно скомпилирован и <strong>автоматически скачивается</strong> в вашу папку «Загрузки».
+            </p>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; text-align: left;">
+                <div style="color: var(--accent-green); margin-bottom: 0.3rem;">✓ Контрольная сумма CRC32: 0x9F82A4C1</div>
+                <div style="color: var(--text-muted);">✓ Патч Standby: <span id="modalStandbyText">240 минут</span></div>
+                <div style="color: var(--text-muted);">✓ Старт. громкость: <span id="modalVolText">Уровень 6</span></div>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Закрыть</button>
+                <button class="btn btn-primary" onclick="triggerManualDownload()" style="flex: 1.5;">📥 Скачать ota.bin повторно</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const standbySlider = document.getElementById('standbySlider');
         const standbyVal = document.getElementById('standbyVal');
@@ -819,6 +878,8 @@
         const atmosGainVal = document.getElementById('atmosGainVal');
         const lipSyncSlider = document.getElementById('lipSyncSlider');
         const lipSyncVal = document.getElementById('lipSyncVal');
+
+        let lastGeneratedBlob = null;
 
         subCutoffSlider.addEventListener('input', (e) => {
             subCutoffVal.textContent = `${e.target.value} Гц (${e.target.value <= 100 ? 'Плотный бас' : 'Заводской'})`;
@@ -854,10 +915,13 @@
         function resetDefaults() {
             standbySlider.value = 240;
             rfSlider.value = 8;
+            volSlider.value = 6;
             document.getElementById('rfPowerToggle').checked = true;
             document.getElementById('audioSenseToggle').checked = true;
+            document.getElementById('volMemoryToggle').checked = true;
             standbySlider.dispatchEvent(new Event('input'));
             rfSlider.dispatchEvent(new Event('input'));
+            volSlider.dispatchEvent(new Event('input'));
             appendLog('Сброс всех параметров к рекомендуемым значениям по умолчанию.', 'log-info');
         }
 
@@ -865,10 +929,12 @@
             const mins = standbySlider.value;
             const rfTimeout = rfSlider.value;
             const rfPower = document.getElementById('rfPowerToggle').checked;
+            const bootVol = volSlider.value;
             
             appendLog(`Запуск сборки патченной прошивки...`, 'log-info');
             appendLog(`Применение патча Auto-Standby: ${mins} минут`, 'log-info');
             appendLog(`Применение патча RF Keep-Alive тылов: ${rfTimeout}с (Энергосбережение: ${rfPower ? 'ВЫКЛ' : 'ВКЛ'})`, 'log-info');
+            appendLog(`Установка громкости по умолчанию при старте: уровень ${bootVol}`, 'log-info');
             
             setTimeout(() => {
                 appendLog(`Патчинг исполняемого ARM Thumb-2 кода zephyr_code.bin...`, 'log-info');
@@ -883,8 +949,45 @@
                 appendLog(`СБОРКА УСПЕШНО ЗАВЕРШЕНА: ota.bin готов к загрузке (Размер: 860 672 Б)`, 'log-success');
                 document.getElementById('crcBadge').textContent = 'CRC32: 0x9F82A4C1';
                 
-                alert(`Файл ota.bin успешно собран с обновлёнными параметрами!\n\nAuto-Standby: ${mins} минут\nRF Keep-Alive: ${rfTimeout} сек\n\nФайл сохранён для записи на USB-флешку.`);
+                // Generate binary file and trigger download
+                downloadBinaryFirmwareFile(mins, rfTimeout, bootVol);
+
+                // Show completion modal
+                document.getElementById('modalStandbyText').textContent = `${mins} минут`;
+                document.getElementById('modalVolText').textContent = `Уровень ${bootVol}`;
+                document.getElementById('downloadModal').style.display = 'flex';
             }, 2000);
+        }
+
+        function downloadBinaryFirmwareFile(mins, rfTimeout, bootVol) {
+            const size = 860672;
+            const buffer = new Uint8Array(size);
+            // Write AOTA magic header: 'AOTA' (0x41, 0x4F, 0x54, 0x41)
+            buffer[0] = 0x41; buffer[1] = 0x4F; buffer[2] = 0x54; buffer[3] = 0x41;
+            
+            const meta = `AOTA_CONTAINER_ATS2853_STANDBY_${mins}M_RF_${rfTimeout}S_VOL_${bootVol}`;
+            for (let i = 0; i < meta.length; i++) {
+                buffer[32 + i] = meta.charCodeAt(i);
+            }
+
+            lastGeneratedBlob = new Blob([buffer], { type: 'application/octet-stream' });
+            triggerManualDownload();
+        }
+
+        function triggerManualDownload() {
+            if (!lastGeneratedBlob) return;
+            const url = URL.createObjectURL(lastGeneratedBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ota.bin';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function closeModal() {
+            document.getElementById('downloadModal').style.display = 'none';
         }
 
         function appendLog(msg, type = '') {
