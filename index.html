@@ -945,53 +945,20 @@
             appendLog(`Установка громкости по умолчанию при старте: уровень ${bootVol}`, 'log-info');
             
             setTimeout(() => {
-                appendLog(`Патчинг исполняемого ARM Thumb-2 кода zephyr_code.bin...`, 'log-info');
-            }, 600);
-
-            setTimeout(() => {
-                appendLog(`Сжатие в контейнер потоковым движком Actions LZ77...`, 'log-info');
-            }, 1200);
-
-            setTimeout(() => {
-                appendLog(`Пересчёт 7 контрольных сумм AOTA CRC32: Заголовок OK, Данные OK.`, 'log-success');
-                appendLog(`СБОРКА УСПЕШНО ЗАВЕРШЕНА: ota.bin готов к загрузке (Размер: 860 672 Б)`, 'log-success');
-                document.getElementById('crcBadge').textContent = 'CRC32: 0x9F82A4C1';
+                appendLog(`ВНИМАНИЕ: Данный веб-интерфейс является виртуальной концепт-студией для демонстрации параметров!`, 'log-info');
+                appendLog(`Для безопасности устройств генерация пустышек отключена. Используйте aota_tool.py в консоли.`, 'log-success');
+                document.getElementById('crcBadge').textContent = 'CRC32: Режим Демо';
                 
-                // Generate binary file and trigger download
-                downloadBinaryFirmwareFile(mins, rfTimeout, bootVol);
-
-                // Show completion modal
+                // Show research notice modal
                 document.getElementById('modalStandbyText').textContent = `${mins} минут`;
                 document.getElementById('modalVolText').textContent = `Уровень ${bootVol}`;
                 document.getElementById('downloadModal').style.display = 'flex';
-            }, 2000);
-        }
-
-        function downloadBinaryFirmwareFile(mins, rfTimeout, bootVol) {
-            const size = 860672;
-            const buffer = new Uint8Array(size);
-            // Write AOTA magic header: 'AOTA' (0x41, 0x4F, 0x54, 0x41)
-            buffer[0] = 0x41; buffer[1] = 0x4F; buffer[2] = 0x54; buffer[3] = 0x41;
-            
-            const meta = `AOTA_CONTAINER_ATS2853_STANDBY_${mins}M_RF_${rfTimeout}S_VOL_${bootVol}`;
-            for (let i = 0; i < meta.length; i++) {
-                buffer[32 + i] = meta.charCodeAt(i);
-            }
-
-            lastGeneratedBlob = new Blob([buffer], { type: 'application/octet-stream' });
-            triggerManualDownload();
+            }, 1200);
         }
 
         function triggerManualDownload() {
-            if (!lastGeneratedBlob) return;
-            const url = URL.createObjectURL(lastGeneratedBlob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'ota.bin';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            alert("⚠️ Внимание!\n\nАвтоматическая загрузка бинарного файла отключена из соображений безопасности устройств.\n\nДля работы с настоящей прошивкой используйте официальные консольные скрипты Python (aota_tool.py) из репозитория GitHub.");
+            window.location.href = "https://github.com/Sin7009/Tuvio-Soundbar-TSBM04B-reverse-engineering";
         }
 
         function closeModal() {
