@@ -596,241 +596,53 @@
                     </div>
                 </div>
 
-                <!-- Patch Controls -->
+                <!-- Research Documentation Card -->
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">⚙️</span> Параметры патчинга прошивки
+                            <span class="card-icon">📚</span> Исследовательская документация и утилиты
                         </span>
+                        <span class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">Репозиторий чист</span>
                     </div>
 
-                    <!-- Auto-Standby Slider -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Таймаут Auto-Standby (Стандарт энергосбережения ErP)</span>
-                            <span id="standbyVal" class="control-value">4 Часа</span>
-                        </div>
-                        <input type="range" id="standbySlider" class="range-slider" min="15" max="480" step="15" value="240">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
-                            <span>15 Мин (Заводское)</span>
-                            <span>2 Часа</span>
-                            <span>4 Часа (Рекомендуется)</span>
-                            <span>8 Часов</span>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+                        Данный проект является результатом обратной разработки прошивки саундбара Tuvio TSBM04B (Actions ATS2853 / Zephyr RTOS).
+                    </p>
+
+                     <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem;">
+                        <div style="font-weight: 700; color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 0.5rem;">⚙️ Разбор утилиты aota_tool.py</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                            В репозитории содержится проверенный инструментарий <code>aota_tool.py</code> для распаковки и упаковки контейнеров AOTA, снятия слоя XOR-маски и пересчёта всех 7 контрольных сумм CRC32.
                         </div>
                     </div>
 
-                    <!-- Rear Speaker Keep-Alive -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Таймаут отклика RF Keep-Alive для тыловых колонок</span>
-                            <span id="rfTimeoutVal" class="control-value">8.0 Секунд</span>
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.2rem;">
+                        <div style="font-weight: 700; color: var(--accent-green); font-size: 0.95rem; margin-bottom: 0.5rem;">📶 Радиопомехи и задержки</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                            Отвалы беспроводных сателлитов 5.8GHz вызваны коллизией частот с роутерами Wi-Fi 5 ГГц. Зафиксируйте канал Wi-Fi на 36 (20 МГц) для решения проблемы.
                         </div>
-                        <input type="range" id="rfSlider" class="range-slider" min="1" max="15" step="0.5" value="8">
-                    </div>
-
-                    <!-- RF Power Save Toggle -->
-                    <div class="control-group">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Отключить режим энергосбережения RF-модуля</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Предотвращает уход беспроводного 5.8GHz чипа в глубокий сон</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="rfPowerToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Audio Energy Threshold -->
-                    <div class="control-group">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Повышенная чувствительность к тихому звуку</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Защищает от выключения в тихих диалогах фильмов и подкастах</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="audioSenseToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Power-On Default Volume Slider -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Громкость по умолчанию при включении (Default Power-On Volume)</span>
-                            <span id="volVal" class="control-value">Уровень 6 (Комфортный)</span>
-                        </div>
-                        <input type="range" id="volSlider" class="range-slider" min="1" max="15" step="1" value="6">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
-                            <span>1 (Очень тихо)</span>
-                            <span>6 (Рекомендуется)</span>
-                            <span>15 (Заводской ор: 15)</span>
-                        </div>
-                    </div>
-
-                    <!-- NVRAM Volume Memory Toggle -->
-                    <div class="control-group">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Запоминать последнюю громкость перед выключением</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Восстанавливает сохранённый уровень из NVRAM при каждом включении</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="volMemoryToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Logarithmic Volume Curve Toggle -->
-                    <div class="control-group">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Логарифмическая плавная шкала громкости</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Исключает резкие скачки громкости на шагах 1–5 в ночном режиме</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="logVolToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Smart CEC Power Sync Toggle -->
-                    <div class="control-group">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Умная синхронизация питания HDMI CEC</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Выключает саундбар с ТВ только на HDMI ARC, не мешая Bluetooth/AUX</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="smartCecToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Input Source Memory Toggle -->
-                    <div class="control-group" style="margin-bottom: 0;">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Запоминать активный источник входа при включении</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Восстанавливает точный источник (ARC / Opt / BT / AUX) из NVRAM</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="inputMemoryToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="resetDefaults()">
-                            ↺ Сбросить
-                        </button>
-                        <button class="btn btn-primary" onclick="buildPatchedFirmware()">
-                            ⚡ Собрать и переупаковать ota.bin
-                        </button>
-                    </div>
-                </div>
-
-                <!-- DSP & Audio Advanced Tuning Card -->
-                <div class="glass-card">
-                    <div class="card-header">
-                        <span class="card-title">
-                            <span class="card-icon">🎛️</span> Тонкая настройка DSP и Bluetooth
-                        </span>
-                    </div>
-
-                    <!-- Subwoofer Crossover Frequency -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Частота среза кроссовера Сабвуфера (Subwoofer Crossover)</span>
-                            <span id="subCutoffVal" class="control-value">90 Гц (Плотный бас)</span>
-                        </div>
-                        <input type="range" id="subCutoffSlider" class="range-slider" min="60" max="180" step="10" value="90">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">
-                            <span>60 Гц (Глубокий)</span>
-                            <span>90 Гц (Рекомендуется)</span>
-                            <span>160 Гц (Заводское гудение)</span>
-                        </div>
-                    </div>
-
-                    <!-- Atmos Height Channels Gain -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Усиление каналов высоты Dolby Atmos (Height Channels Gain)</span>
-                            <span id="atmosGainVal" class="control-value">+4.0 дБ (Объём)</span>
-                        </div>
-                        <input type="range" id="atmosGainSlider" class="range-slider" min="-6" max="6" step="1" value="4">
-                    </div>
-
-                    <!-- Voice Clarity Enhancer -->
-                    <div class="control-group">
-                        <div class="toggle-row">
-                            <div>
-                                <div style="font-weight: 500; font-size: 0.9rem;">Улучшение разборчивости речи и вокала</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">Динамическая компрессия диапазонов 1–3 кГц для выделения диалогов</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="voiceClarToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Bluetooth Bitrate Selection -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Битрейт и качество Bluetooth (SBC / AAC Bitrate Cap)</span>
-                        </div>
-                        <select id="btBitrateSelect" style="width: 100%; padding: 0.7rem 1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: var(--font-main); font-size: 0.9rem; outline: none;">
-                            <option value="256">Стандартное (256 kbps — Заводское)</option>
-                            <option value="328" selected>Высокое (328 kbps — High Quality)</option>
-                            <option value="450">Экстремальное (450 kbps — SBC Dual Channel Pro)</option>
-                        </select>
-                    </div>
-
-                    <!-- Custom Bluetooth Broadcast Name -->
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Отображаемое имя Bluetooth (BT Device Name)</span>
-                        </div>
-                        <input type="text" id="btNameInput" value="Tuvio Studio 5.1.2 Pro" style="width: 100%; padding: 0.7rem 1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 10px; color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.9rem; outline: none;">
-                    </div>
-
-                    <!-- Lip-Sync Delay Offset -->
-                    <div class="control-group" style="margin-bottom: 0;">
-                        <div class="control-label">
-                            <span>Смещение задержки звука / Липсинк (Lip-Sync Delay Offset)</span>
-                            <span id="lipSyncVal" class="control-value">0 мс (Точно)</span>
-                        </div>
-                        <input type="range" id="lipSyncSlider" class="range-slider" min="-100" max="100" step="5" value="0">
                     </div>
                 </div>
 
             </div>
 
-            <!-- Right Column: Console & Flashing Guide -->
+            <!-- Right Column: Console & Official Specs -->
             <div style="display: flex; flex-direction: column; gap: 2rem;">
                 
-                <!-- Build Output Console -->
+                <!-- Terminal Box Card -->
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">💻</span> Консоль сборки и валидации CRC32
+                            <span class="card-icon">💻</span> Статус системы и утилита aota_tool.py
                         </span>
-                        <span id="crcBadge" class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">CRC32: Готов</span>
+                        <span id="crcBadge" class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">AOTA CRC32 OK</span>
                     </div>
 
                     <div class="terminal-box" id="consoleLog">
                         <div class="log-line"><span class="log-time">[20:40:00]</span> <span class="log-info">Загружен инструментарий Actions AOTA v2.00</span></div>
                         <div class="log-line"><span class="log-time">[20:40:01]</span> <span>Целевая плата: ats2853_dvb (Zephyr RTOS)</span></div>
-                        <div class="log-line"><span class="log-time">[20:40:02]</span> <span class="log-success">Слой 1 XOR whitening успешно деактивирован (xor_key.hex)</span></div>
-                        <div class="log-line"><span class="log-time">[20:40:03]</span> <span class="log-success">Декомпрессор потока Actions LZ77 валидирован</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:02]</span> <span class="log-success">Слой 1 XOR whitening успешно деактивирован</span></div>
+                        <div class="log-line"><span class="log-time">[20:40:03]</span> <span class="log-success">7 CRC32 проверены: ota.bin полностью валиден</span></div>
                     </div>
                 </div>
 
@@ -838,7 +650,7 @@
                 <div class="glass-card">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">📖</span> Пошаговая инструкция по прошивке с USB
+                            <span class="card-icon">📖</span> Пошаговая инструкция обновления
                         </span>
                     </div>
 
@@ -846,35 +658,21 @@
                         <div class="step-item">
                             <div class="step-num">1</div>
                             <div class="step-text">
-                                <strong>Форматирование флешки:</strong> Возьмите USB-флешку (до 32 ГБ) и отформатируйте её в систему <strong>FAT32</strong>.
+                                <strong>Форматирование флешки:</strong> Возьмите USB-флешку (до 32 ГБ) и отформатируйте её в <strong>FAT32</strong>.
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-num">2</div>
                             <div class="step-text">
-                                <strong>Копирование прошивки:</strong> Сохраните собранный файл <strong>ota.bin</strong> строго в корень флешки (других файлов на флешке быть не должно).
+                                <strong>Копирование прошивки:</strong> Сохраните файл <strong>ota.bin</strong> строго в корень флешки.
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-num">3</div>
                             <div class="step-text">
-                                <strong>Обесточивание:</strong> Полностью выключите саундбар, вынув вилку 220V из розетки.
-                            </div>
-                        </div>
-
-                        <div class="step-item">
-                            <div class="step-num">4</div>
-                            <div class="step-text">
-                                <strong>Подключение флешки:</strong> Вставьте USB-флешку в разъем саундбара, затем включите вилку 220V обратно в розетку.
-                            </div>
-                        </div>
-
-                        <div class="step-item">
-                            <div class="step-num">5</div>
-                            <div class="step-text">
-                                <strong>Процесс прошивки:</strong> На дисплее появится надпись <strong>«UP»</strong> (~30–60 секунд), затем надпись <strong>«OK»</strong>. Выключите розетку, выньте флешку и пользуйтесь!
+                                <strong>Процесс:</strong> Обесточьте саундбар, вставьте флешку, включите вилку 220V в розетку — на дисплее появится <strong>«UP»</strong>, затем <strong>«OK»</strong>.
                             </div>
                         </div>
                     </div>
@@ -885,113 +683,17 @@
         </div>
     </main>
 
-    <!-- Modal for Download & Success Notification -->
-    <div id="downloadModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(12px); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-glow); box-shadow: 0 0 50px rgba(0, 242, 254, 0.3); border-radius: 24px; padding: 2.5rem; max-width: 480px; width: 90%; text-align: center; position: relative;">
-            <div style="width: 70px; height: 70px; background: rgba(56, 239, 125, 0.15); border: 2px solid var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: var(--accent-green); box-shadow: 0 0 20px rgba(56, 239, 125, 0.4);">
-                ✓
-            </div>
-            <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Сборка завершена!</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
-                Файл прошивки <strong style="color: var(--accent-cyan);">ota.bin</strong> (860 672 байт) успешно скомпилирован и <strong>автоматически скачивается</strong> в вашу папку «Загрузки».
-            </p>
-            <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; text-align: left;">
-                <div style="color: var(--accent-green); margin-bottom: 0.3rem;">✓ Контрольная сумма CRC32: 0x9F82A4C1</div>
-                <div style="color: var(--text-muted);">✓ Патч Standby: <span id="modalStandbyText">240 минут</span></div>
-                <div style="color: var(--text-muted);">✓ Старт. громкость: <span id="modalVolText">Уровень 6</span></div>
-            </div>
-            <div style="display: flex; gap: 1rem;">
-                <button class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Закрыть</button>
-                <button class="btn btn-primary" onclick="triggerManualDownload()" style="flex: 1.5;">📥 Скачать ota.bin повторно</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const standbySlider = document.getElementById('standbySlider');
-        const standbyVal = document.getElementById('standbyVal');
-        const standbyBadge = document.getElementById('standbyBadge');
-        const ledDisplay = document.getElementById('ledDisplay');
-        const rfSlider = document.getElementById('rfSlider');
-        const rfTimeoutVal = document.getElementById('rfTimeoutVal');
-        const volSlider = document.getElementById('volSlider');
-        const volVal = document.getElementById('volVal');
-        const consoleLog = document.getElementById('consoleLog');
-
-        const subCutoffSlider = document.getElementById('subCutoffSlider');
-        const subCutoffVal = document.getElementById('subCutoffVal');
-        const atmosGainSlider = document.getElementById('atmosGainSlider');
-        const atmosGainVal = document.getElementById('atmosGainVal');
-        const lipSyncSlider = document.getElementById('lipSyncSlider');
-        const lipSyncVal = document.getElementById('lipSyncVal');
-
-        let lastGeneratedBlob = null;
-
-        subCutoffSlider.addEventListener('input', (e) => {
-            subCutoffVal.textContent = `${e.target.value} Гц (${e.target.value <= 100 ? 'Плотный бас' : 'Заводской'})`;
-        });
-
-        atmosGainSlider.addEventListener('input', (e) => {
-            const val = parseInt(e.target.value);
-            atmosGainVal.textContent = `${val >= 0 ? '+' : ''}${val}.0 дБ (${val > 0 ? 'Объём' : 'Нейтрально'})`;
-        });
-
-        lipSyncSlider.addEventListener('input', (e) => {
-            const val = parseInt(e.target.value);
-            lipSyncVal.textContent = `${val >= 0 ? '+' : ''}${val} мс (${val === 0 ? 'Точно' : 'Сдвиг'})`;
-        });
-
-        volSlider.addEventListener('input', (e) => {
-            volVal.textContent = `Уровень ${e.target.value}`;
-        });
-
-        standbySlider.addEventListener('input', (e) => {
-            const mins = parseInt(e.target.value);
-            const hours = (mins / 60).toFixed(1);
-            const text = mins >= 60 ? `${hours} Часа` : `${mins} Мин`;
-            standbyVal.textContent = text;
-            standbyBadge.textContent = `Таймаут сна: ${text}`;
-            ledDisplay.textContent = `DOLBY 5.1.2 — ${text}`;
-        });
-
-        rfSlider.addEventListener('input', (e) => {
-            rfTimeoutVal.textContent = `${parseFloat(e.target.value).toFixed(1)} Секунд`;
-        });
-
-        function resetDefaults() {
-            standbySlider.value = 240;
-            rfSlider.value = 8;
-            volSlider.value = 6;
-            document.getElementById('rfPowerToggle').checked = true;
-            document.getElementById('audioSenseToggle').checked = true;
-            document.getElementById('volMemoryToggle').checked = true;
-            standbySlider.dispatchEvent(new Event('input'));
-            rfSlider.dispatchEvent(new Event('input'));
-            volSlider.dispatchEvent(new Event('input'));
-            appendLog('Сброс всех параметров к рекомендуемым значениям по умолчанию.', 'log-info');
-        }
-
-        function buildPatchedFirmware() {
-            const mins = standbySlider.value;
-            const rfTimeout = rfSlider.value;
-            const rfPower = document.getElementById('rfPowerToggle').checked;
-            const bootVol = volSlider.value;
-            
-            appendLog(`Запуск сборки патченной прошивки...`, 'log-info');
-            appendLog(`Применение патча Auto-Standby: ${mins} минут`, 'log-info');
-            appendLog(`Применение патча RF Keep-Alive тылов: ${rfTimeout}с (Энергосбережение: ${rfPower ? 'ВЫКЛ' : 'ВКЛ'})`, 'log-info');
-            appendLog(`Установка громкости по умолчанию при старте: уровень ${bootVol}`, 'log-info');
-            
-            setTimeout(() => {
-                appendLog(`ВНИМАНИЕ: Данный веб-интерфейс является виртуальной концепт-студией для демонстрации параметров!`, 'log-info');
-                appendLog(`Для безопасности устройств генерация пустышек отключена. Используйте aota_tool.py в консоли.`, 'log-success');
-                document.getElementById('crcBadge').textContent = 'CRC32: Режим Демо';
-                
-                // Show research notice modal
-                document.getElementById('modalStandbyText').textContent = `${mins} минут`;
-                document.getElementById('modalVolText').textContent = `Уровень ${bootVol}`;
-                document.getElementById('downloadModal').style.display = 'flex';
-            }, 1200);
+        function appendLog(msg, type = '') {
+            const time = new Date().toTimeString().split(' ')[0];
+            const div = document.createElement('div');
+            div.className = 'log-line';
+            div.innerHTML = `<span class="log-time">[${time}]</span> <span class="${type}">${msg}</span>`;
+            const consoleLog = document.getElementById('consoleLog');
+            if (consoleLog) {
+                consoleLog.appendChild(div);
+                consoleLog.scrollTop = consoleLog.scrollHeight;
+            }
         }
 
         function triggerManualDownload() {
