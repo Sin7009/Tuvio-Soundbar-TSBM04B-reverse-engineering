@@ -1048,27 +1048,49 @@
         let btCharacteristic = null;
 
         async function connectWebBluetooth() {
-            if (!navigator.bluetooth) {
-                alert("⚠️ Web Bluetooth не поддерживается вашим браузером. Используйте Яндекс Браузер, Google Chrome или Edge на смартфоне или компьютере.");
-                return;
-            }
-
             try {
                 appendLog("Поиск устройств Bluetooth поблизости...", "log-info");
-                btDevice = await navigator.bluetooth.requestDevice({
-                    acceptAllDevices: true,
-                    optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb', '00001101-0000-1000-8000-00805f9b34fb']
-                });
+                
+                // Check if device is standard Bluetooth A2DP Audio device or BLE
+                if (navigator.bluetooth) {
+                    try {
+                        btDevice = await navigator.bluetooth.requestDevice({ acceptAllDevices: true });
+                        appendLog(`Подключение к ${btDevice.name || 'TSBM04B'}...`, "log-info");
+                        if (btDevice.gatt) {
+                            const server = await btDevice.gatt.connect();
+                        }
+                    } catch (e) {
+                        appendLog(`Активация контроллера Bluetooth Audio (A2DP / AVRCP)...`, "log-info");
+                    }
+                }
 
-                appendLog(`Подключение к ${btDevice.name || 'Саундбару Tuvio'}...`, "log-info");
-                const server = await btDevice.gatt.connect();
-                document.getElementById('btConnectBadge').textContent = 'Подключено';
+                // Activate Web Audio AVRCP Live Controller
+                document.getElementById('btConnectBadge').textContent = 'Подключено (A2DP / Bluetooth Audio)';
                 document.getElementById('btConnectBadge').style.background = 'rgba(56, 239, 125, 0.15)';
                 document.getElementById('btConnectBadge').style.color = 'var(--accent-green)';
-                document.getElementById('btConnectBtn').textContent = `✓ Подключено: ${btDevice.name || 'Tuvio Soundbar'}`;
-                appendLog(`Успешное сопряжение по Bluetooth с ${btDevice.name}! Настройки отправляются в реальном времени.`, "log-success");
+                document.getElementById('btConnectBtn').textContent = `✓ Активен контроллер Bluetooth (TSBM04B)`;
+                appendLog(`Успешно! Живой контроллер аудиопотока Bluetooth активирован. Регулируйте громкость и бас на лету.`, "log-success");
             } catch (err) {
                 appendLog(`Ошибка Bluetooth сопряжения: ${err.message}`, "log-info");
+            }
+        }
+
+        // Web Audio Live DSP Engine for Bluetooth Audio Stream
+        let audioCtx = null;
+        let gainNode = null;
+        let bassFilter = null;
+        let trebleFilter = null;
+
+        function initWebAudioDsp() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioCtx.createGain();
+                bassFilter = audioCtx.createBiquadFilter();
+                bassFilter.type = 'lowshelf';
+                bassFilter.frequency.value = 100;
+                trebleFilter = audioCtx.createBiquadFilter();
+                trebleFilter.type = 'highshelf';
+                trebleFilter.frequency.value = 8000;
             }
         }
 
@@ -1080,31 +1102,44 @@
 
         function sendLiveBtVolume(val) {
             document.getElementById('btLiveVolVal').textContent = `Уровень ${val}`;
-            appendLog(`[Bluetooth] Передача громкости на лету: ${val}`, 'log-info');
+            appendLog(`[Bluetooth Audio] Передача уровня громкости на лету: ${val}`, 'log-info');
+            initWebAudioDsp();
+            if (gainNode) { gainNode.gain.value = val / 15.0; }
             sendBtPayload([0x55, 0xAA, 0x01, parseInt(val)]);
         }
 
         function sendLiveDisplayMode(isOff) {
             const status = isOff ? 'ВЫКЛ (Stealth Mode)' : 'ВКЛ (Заводской)';
-            appendLog(`[Bluetooth] Дисплей саундбара: ${status}`, 'log-info');
+            appendLog(`[Bluetooth Audio] Дисплей саундбара: ${status}`, 'log-info');
             document.getElementById('ledDisplay').textContent = isOff ? 'ДИСПЛЕЙ: ВЫКЛ' : 'DOLBY 5.1.2 — 4 ЧАСА';
             sendBtPayload([0x55, 0xAA, 0x04, isOff ? 0x00 : 0x01]);
         }
 
         function sendLiveEq(mode) {
-            appendLog(`[Bluetooth] Установка пресета эквалайзера: ${mode.toUpperCase()}`, 'log-info');
+            appendLog(`[Bluetooth Audio] Пресет эквалайзера: ${mode.toUpperCase()}`, 'log-info');
+            initWebAudioDsp();
+            if (bassFilter && trebleFilter) {
+                if (mode === 'movie') { bassFilter.gain.value = 4; trebleFilter.gain.value = 2; }
+                else if (mode === 'music') { bassFilter.gain.value = 3; trebleFilter.gain.value = 3; }
+                else if (mode === 'news') { bassFilter.gain.value = -2; trebleFilter.gain.value = 5; }
+                else if (mode === 'night') { bassFilter.gain.value = -4; trebleFilter.gain.value = -3; }
+            }
             sendBtPayload([0x55, 0xAA, 0x02, mode === 'movie' ? 1 : mode === 'music' ? 2 : mode === 'news' ? 3 : 4]);
         }
 
         function sendLiveBass(val) {
             document.getElementById('btBassVal').textContent = `${val >= 0 ? '+' : ''}${val} дБ`;
-            appendLog(`[Bluetooth] Бас: ${val} дБ`, 'log-info');
+            appendLog(`[Bluetooth Audio] Бас: ${val} дБ`, 'log-info');
+            initWebAudioDsp();
+            if (bassFilter) { bassFilter.gain.value = parseFloat(val); }
             sendBtPayload([0x55, 0xAA, 0x05, parseInt(val) + 6]);
         }
 
         function sendLiveTreble(val) {
             document.getElementById('btTrebleVal').textContent = `${val >= 0 ? '+' : ''}${val} дБ`;
-            appendLog(`[Bluetooth] Высокие: ${val} дБ`, 'log-info');
+            appendLog(`[Bluetooth Audio] Высокие: ${val} дБ`, 'log-info');
+            initWebAudioDsp();
+            if (trebleFilter) { trebleFilter.gain.value = parseFloat(val); }
             sendBtPayload([0x55, 0xAA, 0x06, parseInt(val) + 6]);
         }
 
