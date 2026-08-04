@@ -514,81 +514,41 @@
             <!-- Left Column: Visualizer & Controls -->
             <div style="display: flex; flex-direction: column; gap: 2rem;">
                 
-                <!-- Web Bluetooth Live Mobile Controller Card -->
+                <!-- Official Manual & Smart Phone Control Guide Card -->
                 <div class="glass-card" style="border: 1px solid var(--border-glow); background: radial-gradient(circle at top left, rgba(0, 242, 254, 0.15), rgba(12, 16, 28, 0.95)); box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);">
                     <div class="card-header">
                         <span class="card-title">
-                            <span class="card-icon">📱</span> Прямое управление по Bluetooth с телефона
+                            <span class="card-icon">📱</span> Управление саундбаром с телефона (Штатный путь)
                         </span>
-                        <span id="btConnectBadge" class="control-value" style="background: rgba(255, 8, 68, 0.15); color: #ff0844;">Отключено</span>
+                        <span class="control-value" style="background: rgba(56, 239, 125, 0.15); color: var(--accent-green);">Официальное руководство</span>
                     </div>
 
-                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1.2rem;">
-                        Подключитесь по Bluetooth прямо из браузера смартфона или компьютера для <strong>изменения настроек на лету</strong> (без прошивки)!
+                    <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.2rem;">
+                        Официальное руководство Tuvio TSBM04B (52 страницы) документирует следующие параметры управления:
                     </p>
 
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                        <button class="btn btn-primary" id="btConnectBtn" onclick="connectWebBluetooth()" style="flex: 1; padding: 0.9rem; font-size: 0.95rem;">
-                            📶 Подключиться по Bluetooth (BLE / SPP)
-                        </button>
+                    <!-- Real Manual Specs Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem;">
+                            <div style="color: var(--accent-cyan); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.3rem;">🌙 Авто-Затемнение Дисплея</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">
+                                Дисплей автоматически <strong>гаснет через 10 секунд</strong> бездействия кнопок пульта.
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem;">
+                            <div style="color: var(--accent-green); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.3rem;">⚡ Режим Без Сна (Bluetooth)</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">
+                                В режиме сопряжения Bluetooth <strong>автоотключение полностью заблокировано</strong>.
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Live Bluetooth Controls (Active when connected) -->
-                    <div id="btLiveControls" style="display: flex; flex-direction: column; gap: 1.2rem;">
-                        
-                        <!-- Live Volume Slider -->
-                        <div class="control-group">
-                            <div class="control-label">
-                                <span>Громкость на лету (Master Volume)</span>
-                                <span id="btLiveVolVal" class="control-value" style="color: var(--accent-cyan);">Уровень 12</span>
-                            </div>
-                            <input type="range" id="btLiveVolSlider" class="range-slider" min="0" max="30" value="12" oninput="sendLiveBtVolume(this.value)">
+                    <div style="background: rgba(0,0,0,0.2); border: 1px dashed var(--border-color); border-radius: 12px; padding: 1rem;">
+                        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-main);">📡 Управление с телефона через ИК-пульт / Wi-Fi IR шлюз (Broadlink / Tuya)</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+                            Для полного управления с экрана смартфона (Громкость, Бас ±, Высокие ±, Пресеты Эквалайзера, Источники) используйте телефон с ИК-портом или недорогой Wi-Fi→IR обученный модуль. 100% стабильность, 0 риска.
                         </div>
-
-                        <!-- Live Display Control (Stealth OFF / Brightness) -->
-                        <div class="control-group">
-                            <div class="toggle-row">
-                                <div>
-                                    <div style="font-weight: 500; font-size: 0.9rem;">Полное отключение дисплея (Stealth Mode / OFF)</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-muted);">Мгновенно гасит яркие светодиоды экранов саундбара при просмотре фильмов</div>
-                                </div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="btDisplayToggle" onchange="sendLiveDisplayMode(this.checked)">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Live EQ Preset Buttons -->
-                        <div class="control-group">
-                            <div class="control-label" style="margin-bottom: 0.6rem;">
-                                <span>Режимы звука и эквалайзера (Live Sound Preset)</span>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
-                                <button class="btn btn-secondary" onclick="sendLiveEq('movie')" style="padding: 0.6rem 0.3rem; font-size: 0.75rem;">🎬 Фильмы</button>
-                                <button class="btn btn-secondary" onclick="sendLiveEq('music')" style="padding: 0.6rem 0.3rem; font-size: 0.75rem;">🎵 Музыка</button>
-                                <button class="btn btn-secondary" onclick="sendLiveEq('news')" style="padding: 0.6rem 0.3rem; font-size: 0.75rem;">Голос</button>
-                                <button class="btn btn-secondary" onclick="sendLiveEq('night')" style="padding: 0.6rem 0.3rem; font-size: 0.75rem;">🌙 Ночь</button>
-                            </div>
-                        </div>
-
-                        <!-- Live Bass & Treble Gain Sliders -->
-                        <div class="control-group">
-                            <div class="control-label">
-                                <span>Усиление басов (Bass Gain)</span>
-                                <span id="btBassVal" class="control-value">+2 дБ</span>
-                            </div>
-                            <input type="range" id="btBassSlider" class="range-slider" min="-6" max="6" value="2" oninput="sendLiveBass(this.value)">
-                        </div>
-
-                        <div class="control-group" style="margin-bottom: 0;">
-                            <div class="control-label">
-                                <span>Усиление высоких частот (Treble Gain)</span>
-                                <span id="btTrebleVal" class="control-value">0 дБ</span>
-                            </div>
-                            <input type="range" id="btTrebleSlider" class="range-slider" min="-6" max="6" value="0" oninput="sendLiveTreble(this.value)">
-                        </div>
-
                     </div>
                 </div>
 
@@ -1043,104 +1003,13 @@
             document.getElementById('downloadModal').style.display = 'none';
         }
 
-        // Web Bluetooth Live Control Protocol
-        let btDevice = null;
-        let btCharacteristic = null;
-
-        async function connectWebBluetooth() {
-            try {
-                appendLog("Поиск устройств Bluetooth поблизости...", "log-info");
-                
-                // Check if device is standard Bluetooth A2DP Audio device or BLE
-                if (navigator.bluetooth) {
-                    try {
-                        btDevice = await navigator.bluetooth.requestDevice({ acceptAllDevices: true });
-                        appendLog(`Подключение к ${btDevice.name || 'TSBM04B'}...`, "log-info");
-                        if (btDevice.gatt) {
-                            const server = await btDevice.gatt.connect();
-                        }
-                    } catch (e) {
-                        appendLog(`Активация контроллера Bluetooth Audio (A2DP / AVRCP)...`, "log-info");
-                    }
-                }
-
-                // Activate Web Audio AVRCP Live Controller
-                document.getElementById('btConnectBadge').textContent = 'Подключено (A2DP / Bluetooth Audio)';
-                document.getElementById('btConnectBadge').style.background = 'rgba(56, 239, 125, 0.15)';
-                document.getElementById('btConnectBadge').style.color = 'var(--accent-green)';
-                document.getElementById('btConnectBtn').textContent = `✓ Активен контроллер Bluetooth (TSBM04B)`;
-                appendLog(`Успешно! Живой контроллер аудиопотока Bluetooth активирован. Регулируйте громкость и бас на лету.`, "log-success");
-            } catch (err) {
-                appendLog(`Ошибка Bluetooth сопряжения: ${err.message}`, "log-info");
-            }
-        }
-
-        // Web Audio Live DSP Engine for Bluetooth Audio Stream
-        let audioCtx = null;
-        let gainNode = null;
-        let bassFilter = null;
-        let trebleFilter = null;
-
-        function initWebAudioDsp() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                gainNode = audioCtx.createGain();
-                bassFilter = audioCtx.createBiquadFilter();
-                bassFilter.type = 'lowshelf';
-                bassFilter.frequency.value = 100;
-                trebleFilter = audioCtx.createBiquadFilter();
-                trebleFilter.type = 'highshelf';
-                trebleFilter.frequency.value = 8000;
-            }
-        }
-
-        function sendBtPayload(bytes) {
-            if (btCharacteristic) {
-                try { btCharacteristic.writeValue(new Uint8Array(bytes)); } catch(e) {}
-            }
-        }
-
-        function sendLiveBtVolume(val) {
-            document.getElementById('btLiveVolVal').textContent = `Уровень ${val}`;
-            appendLog(`[Bluetooth Audio] Передача уровня громкости на лету: ${val}`, 'log-info');
-            initWebAudioDsp();
-            if (gainNode) { gainNode.gain.value = val / 15.0; }
-            sendBtPayload([0x55, 0xAA, 0x01, parseInt(val)]);
-        }
-
-        function sendLiveDisplayMode(isOff) {
-            const status = isOff ? 'ВЫКЛ (Stealth Mode)' : 'ВКЛ (Заводской)';
-            appendLog(`[Bluetooth Audio] Дисплей саундбара: ${status}`, 'log-info');
-            document.getElementById('ledDisplay').textContent = isOff ? 'ДИСПЛЕЙ: ВЫКЛ' : 'DOLBY 5.1.2 — 4 ЧАСА';
-            sendBtPayload([0x55, 0xAA, 0x04, isOff ? 0x00 : 0x01]);
-        }
-
-        function sendLiveEq(mode) {
-            appendLog(`[Bluetooth Audio] Пресет эквалайзера: ${mode.toUpperCase()}`, 'log-info');
-            initWebAudioDsp();
-            if (bassFilter && trebleFilter) {
-                if (mode === 'movie') { bassFilter.gain.value = 4; trebleFilter.gain.value = 2; }
-                else if (mode === 'music') { bassFilter.gain.value = 3; trebleFilter.gain.value = 3; }
-                else if (mode === 'news') { bassFilter.gain.value = -2; trebleFilter.gain.value = 5; }
-                else if (mode === 'night') { bassFilter.gain.value = -4; trebleFilter.gain.value = -3; }
-            }
-            sendBtPayload([0x55, 0xAA, 0x02, mode === 'movie' ? 1 : mode === 'music' ? 2 : mode === 'news' ? 3 : 4]);
-        }
-
-        function sendLiveBass(val) {
-            document.getElementById('btBassVal').textContent = `${val >= 0 ? '+' : ''}${val} дБ`;
-            appendLog(`[Bluetooth Audio] Бас: ${val} дБ`, 'log-info');
-            initWebAudioDsp();
-            if (bassFilter) { bassFilter.gain.value = parseFloat(val); }
-            sendBtPayload([0x55, 0xAA, 0x05, parseInt(val) + 6]);
-        }
-
-        function sendLiveTreble(val) {
-            document.getElementById('btTrebleVal').textContent = `${val >= 0 ? '+' : ''}${val} дБ`;
-            appendLog(`[Bluetooth Audio] Высокие: ${val} дБ`, 'log-info');
-            initWebAudioDsp();
-            if (trebleFilter) { trebleFilter.gain.value = parseFloat(val); }
-            sendBtPayload([0x55, 0xAA, 0x06, parseInt(val) + 6]);
+        function appendLog(msg, type = '') {
+            const time = new Date().toTimeString().split(' ')[0];
+            const div = document.createElement('div');
+            div.className = 'log-line';
+            div.innerHTML = `<span class="log-time">[${time}]</span> <span class="${type}">${msg}</span>`;
+            consoleLog.appendChild(div);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
         }
 
         function appendLog(msg, type = '') {
