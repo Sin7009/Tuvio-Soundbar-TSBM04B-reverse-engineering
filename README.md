@@ -81,28 +81,22 @@
 
 ---
 
-## 🛠️ Для разработчиков и реверс-инженеров
+## 🛠️ Для разработчиков и исследовательских целей
 
-В репозитории содержатся утилиты на Python 3 для самостоятельной работы с файлами прошивки:
+В репозитории содержится проверенный инструментарий `aota_tool.py` на Python 3 для работы с контейнерами прошивок Actions AOTA:
 
-* `aota_tool.py` — Утилита распаковки/упаковки контейнера Actions AOTA со снятием слоя 1 XOR-маски и автоматическим пересчётом 7 контрольных сумм CRC32 (`header_crc32`, `data_crc32`, `zephyr.bin crc32` и т.д.).
-* `unpack_zephyr.py` — Извлечение исполняемого бинарника ARM Thumb-2 `zephyr_code.bin` из прошивки Zephyr RTOS с валидацией векторов Cortex-M4 (`MSP = 0x20010000`, `Reset = 0x00000101`).
-* `patch_firmware.py` — Скрипт бинарного патчинга порогов энергии, RF-таймеров и громкости.
+* `aota_tool.py` — Утилита распаковки и пересборки контейнера Actions AOTA со снятием слоя 1 XOR-маски и автоматическим пересчётом всех 7 контрольных сумм CRC32 (`header_crc32`, `data_crc32`, `zephyr.bin crc32` и т.д.).
 
 ### Быстрый запуск из консоли:
 
 ```bash
-# 1. Распаковать прошивку из контейнера ota.bin
+# 1. Распаковать оригинальный образ ota.bin
 python3 aota_tool.py unpack ota.bin dec/
 
-# 2. Распаковать код приложения Zephyr RTOS
-python3 unpack_zephyr.py dec/zephyr.bin unpacked/
+# 2. Модифицировать нужные бинарные разделы (param.bin, sdfs.bin)
 
-# 3. Применить патчи
-python3 patch_firmware.py
-
-# 4. Переупаковать готовый ota.bin для флешки
-python3 aota_tool.py repack patched/ ota.bin
+# 3. Переупаковать готовый ota.bin с валидными CRC32
+python3 aota_tool.py repack dec/ new_ota.bin
 ```
 
 ---
